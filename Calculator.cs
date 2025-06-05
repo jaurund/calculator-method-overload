@@ -1,17 +1,37 @@
-using System;
-using System.Linq;
-
 public class Calculator
 {
-    public double Add(double a, double b) => a + b;
-    public double Add(double[] numbers) => numbers.Sum();
+    private readonly Dictionary<string, IOperation> operations;
 
-    public double Subtract(double a, double b) => a - b;
-    public double Subtract(double[] numbers) => numbers.Aggregate((a, b) => a - b);
+    public Calculator()
+    {
+        operations = new Dictionary<string, IOperation>
+        {
+            { "+", new Add() },
+            { "-", new Subtract() },
+            { "*", new Multiply() },
+            { "/", new Divide() },
+        };
+    }
 
-    public double Multiply(double a, double b) => a * b;
-    public double Multiply(double[] numbers) => numbers.Aggregate((a, b) => a * b);
+    public void Run()
+    {
+        Console.WriteLine("Enter first number:");
+        double a = double.Parse(Console.ReadLine());
 
-    public double Divide(double a, double b) => b != 0 ? a / b : double.NaN;
-    public static double Divide(double[] numbers) => numbers.Aggregate((a, b) => b != 0 ? a / b : double.NaN);
+        Console.WriteLine("Enter an operator (+, -, *, /):");
+        string op = Console.ReadLine();
+
+        Console.WriteLine("Enter second number:");
+        double b = double.Parse(Console.ReadLine());
+
+        if (operations.ContainsKey(op))
+        {
+            double result = operations[op].Execute(a, b);
+            Console.WriteLine($"Result: {result}");
+        }
+        else
+        {
+            Console.WriteLine("Unknown operator.");
+        }
+    }
 }

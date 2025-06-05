@@ -7,8 +7,8 @@ public class Divide : IOperation
     {
         if (b == 0)
         {
-            Printer.TypeWriter("Why do you think I can't let you divide by zero?\n", 30);
-            Printer.TypeWriter("It's because I don't want to see you fail.\n", 30);
+            Printer.TypeWriter("Why do you think I can't let you divide by zero?\n", 60);
+            Printer.TypeWriter("Well, imagine that you have zero cookies and you split them evenly among zero friends. How many cookies does each person get?\n\nSee? It doesn't make sense. And Cookie Monster is sad that there are no cookies. And you are sad that you have no friends.", 60);
             return double.NaN;
         }
 

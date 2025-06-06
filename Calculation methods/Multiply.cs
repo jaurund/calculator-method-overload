@@ -7,4 +7,16 @@ public class Multiply : IOperation
     {
         return a * b;
     }
+
+    public double Execute(List<double> numbers)
+    {
+        if (numbers.Count == 0) return 0; // No numbers = default to 0 (could also throw exception)
+
+        double result = 1;
+        foreach (var number in numbers)
+        {
+            result *= number;
+        }
+        return result;
+    }
 }

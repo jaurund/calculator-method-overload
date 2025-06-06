@@ -1,14 +1,15 @@
 using System;
-using System.Data;
-using System.Drawing;
-using System.Globalization;
 using System.Threading;
 
-public class Printer
+// This code is part of a text effects library that simulates a typewriter effect in the console.
+public class TextEffects
 {
-    public static void TypeWriter(string text, int baseDelay = 30)
+    private static Random rand = new Random();
+
+    public static double SpeedMultiplier { get; set; } = 1.0;
+
+    public static void TypeWriter(string text, int baseDelay = 17) //This class adds a typewriter effect to the console output.
     {
-        Random rand = new Random();
         bool slowMode = false;
 
         for (int i = 0; i < text.Length; i++)
@@ -28,22 +29,22 @@ public class Printer
 
             Console.Write(text[i]);
 
-            int delay = baseDelay;
+            int delay = (int)(baseDelay * SpeedMultiplier);
             if (slowMode)
             {
-                delay *= 4; // 4x seinare skriving
+                delay *= 10; // slow mode = 4x base delay
             }
-            else if (text[i] == '.' || text[i] == ',' || text[i] == '!' || text[i] == '?')
+            if (text[i] == '.' || text[i] == ',' || text[i] == '!' || text[i] == '?')
             {
-                delay *= 6;
+                delay *= 6; // punctuation in slow mode = 6x base delay
             }
             else if (char.IsWhiteSpace(text[i]))
             {
-                delay *= 2;
+                delay *= 2; // whitespace in slow mode = 2x base delay
             }
-            else
+            else if (!slowMode)
             {
-                delay = rand.Next(delay, delay + 40);
+                delay = rand.Next(delay, delay + 25);
             }
 
             Thread.Sleep(delay);

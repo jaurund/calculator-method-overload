@@ -8,4 +8,3 @@ public class Subtract : IOperation
         return a - b;
     }
 }
-

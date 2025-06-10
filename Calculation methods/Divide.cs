@@ -23,6 +23,7 @@ public class Divide : IOperation
         }
         return a / b;
     }
+
     public double Execute(List<double> numbers)
     {
         if (numbers.Count == 0) return 0; // No numbers = default to 0 (could also throw exception)

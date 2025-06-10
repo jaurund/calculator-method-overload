@@ -15,45 +15,50 @@ public class Calculator
 
     public void Run()
     {
-        Console.WriteLine("Choose mode: single or list");
-        string mode = Console.ReadLine().ToLower();
+        Console.WriteLine("Welcome to the Calculator!");
+        Console.WriteLine("Start typing to calculate:");
+        string input = Console.ReadLine().Trim();
 
-        Console.WriteLine("Enter an operator (+, -, *, /):");
-        string op = Console.ReadLine();
-
-        if (!operations.ContainsKey(op))
+        if (double.TryParse(input, out double firstNumber))
         {
-            Console.WriteLine("Unknown operator.");
-            return;
-        }
-
-        if (mode == "single")
-        {
-            Console.WriteLine("Enter first number:");
-            double a = double.Parse(Console.ReadLine());
-
-            Console.WriteLine("Enter second number:");
-            double b = double.Parse(Console.ReadLine());
-
-            double result = operations[op].Execute(a, b);
-            Console.WriteLine($"Result: {result}");
-        }
-        else if (mode == "list")
-        {
-            Console.WriteLine("Enter numbers separated by spaces:");
-            string[] input = Console.ReadLine().Split();
-            List<double> numbers = new List<double>();
-
-            foreach (var s in input)
+            Console.WriteLine("Enter an operator (+, -, *, /):");
+            string op = Console.ReadLine().Trim();
+            if (!operations.ContainsKey(op))
             {
-                if (double.TryParse(s, out double num))
-                {
-                    numbers.Add(num);
-                }
+                Console.WriteLine("Unknown operator.");
+                return;
             }
-
-            double result = operations[op].Execute(numbers);
+            Console.WriteLine("Enter second number:");
+            if (!double.TryParse(Console.ReadLine().Trim(), out double secondNumber))
+            {
+                Console.WriteLine("Invalid number.");
+                return;
+            }
+            double result = operations[op].Execute(firstNumber, secondNumber);
             Console.WriteLine($"Result: {result}");
+        }
+        else if (
+                   input.Contains("+")
+                || input.Contains("-")
+                || input.Contains("*")
+                || input.Contains("/")
+                || input.Contains("(")
+                || input.Contains(")")
+                )
+        {
+            try
+            {
+                double result = new ExpressionParser().Parse(input);
+                Console.WriteLine($"Result: {result}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error parsing expression: {ex.Message}");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Invalid input.");
         }
     }
 }

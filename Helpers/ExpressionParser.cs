@@ -50,7 +50,6 @@ public class ExpressionParser
         return x;
     }
 
-
     private double ParseFactor()
     {
         if (Input![Position] == '(')

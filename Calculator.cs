@@ -13,37 +13,56 @@ public class Calculator
         };
     }
 
-    public void Run()
+    public bool Run()
     {
         Console.WriteLine("Welcome to the Calculator!");
-        Console.WriteLine("Start typing to calculate:");
-        string input = Console.ReadLine().Trim();
+        Console.WriteLine("Start typing to calculate, or type 'exit' to quit:");
+        string? input = Console.ReadLine(); // Allow null
+
+        if (input.ToLower() == "exit")
+        {
+            return false; // Exit the loop
+        }
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            Console.WriteLine("Invalid input or no input provided.");
+            return true;
+        }
+        input = input.Trim();
 
         if (double.TryParse(input, out double firstNumber))
         {
             Console.WriteLine("Enter an operator (+, -, *, /):");
-            string op = Console.ReadLine().Trim();
+            string? op = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(op))
+            {
+                Console.WriteLine("Invalid operator.");
+                return true;
+            }
+            op = op.Trim();
             if (!operations.ContainsKey(op))
             {
                 Console.WriteLine("Unknown operator.");
-                return;
+                return true;
             }
             Console.WriteLine("Enter second number:");
-            if (!double.TryParse(Console.ReadLine().Trim(), out double secondNumber))
+            string? secondInput = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(secondInput) || !double.TryParse(secondInput.Trim(), out double secondNumber))
             {
                 Console.WriteLine("Invalid number.");
-                return;
+                return true;
             }
             double result = operations[op].Execute(firstNumber, secondNumber);
             Console.WriteLine($"Result: {result}");
         }
         else if (
-                   input.Contains("+")
-                || input.Contains("-")
-                || input.Contains("*")
-                || input.Contains("/")
-                || input.Contains("(")
-                || input.Contains(")")
+            input.Contains("+")
+            || input.Contains("-")
+            || input.Contains("*")
+            || input.Contains("/")
+            || input.Contains("(")
+            || input.Contains(")")
                 )
         {
             try
@@ -60,5 +79,6 @@ public class Calculator
         {
             Console.WriteLine("Invalid input.");
         }
+        return true;
     }
 }
